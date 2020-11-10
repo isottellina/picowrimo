@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework.reverse import reverse
@@ -54,6 +55,16 @@ class AdvancementSerializer(serializers.ModelSerializer):
         queryset=Project.objects,
         view_name='project-detail'
     )
+
+    def validate(self, attrs):
+        start = attrs.get('start')
+        end = attrs.get('end')
+        if start > end:
+            raise serializers.ValidationError("Start date cannot be greater than end date")
+        if start > datetime.now():
+            raise serializers.ValidationError("Start date cannot be greater than current date")
+        if end > datetime.now():
+            raise serializers.ValidationError("End date cannot be greater than current date")
 
     class Meta:
         model = Advancement
