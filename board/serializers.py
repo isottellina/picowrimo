@@ -41,12 +41,18 @@ class ProjectSerializer(serializers.ModelSerializer):
         lookup_field=User.USERNAME_FIELD
     )
 
+    wordcount = serializers.SerializerMethodField('get_wordcount')
+
+    def get_wordcount(self, obj):
+        return sum(adv.delta for adv in obj.advancements.all())
+
     class Meta:
         model = Project
         fields = ('url',
                   'name',
                   'description',
                   'user',
+                  'wordcount',
                   'advancements')
 
 
