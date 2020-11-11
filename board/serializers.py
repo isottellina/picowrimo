@@ -62,6 +62,9 @@ class AdvancementSerializer(serializers.ModelSerializer):
         view_name='project-detail'
     )
 
+    start = serializers.DateTimeField()
+    end = serializers.DateTimeField()
+
     def validate(self, attrs):
         start = attrs.get('start')
         end = attrs.get('end')
